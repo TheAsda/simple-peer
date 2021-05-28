@@ -19,7 +19,7 @@ function warn (message) {
   console.warn(message)
 }
 
-function getRandomString(){
+function getRandomString () {
   return Math.random().toString(36).substring(2, 7) + Math.random().toString(36).substring(2, 7)
 }
 
