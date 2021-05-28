@@ -1,7 +1,6 @@
 /*! simple-peer. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */
 const debug = require('debug')('simple-peer')
 const getBrowserRTC = require('get-browser-rtc')
-const randombytes = require('randombytes')
 const stream = require('readable-stream')
 const queueMicrotask = require('queue-microtask') // TODO: remove when Node 10 is not supported
 const errCode = require('err-code')
@@ -20,6 +19,10 @@ function warn (message) {
   console.warn(message)
 }
 
+function getRandomString(){
+  return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+}
+
 /**
  * WebRTC peer connection. Same API as node core `net.Socket`, plus a few extra methods.
  * Duplex stream.
@@ -33,11 +36,11 @@ class Peer extends stream.Duplex {
 
     super(opts)
 
-    this._id = randombytes(4).toString('hex').slice(0, 7)
+    this._id = getRandomString().slice(0, 7)
     this._debug('new peer %o', opts)
 
     this.channelName = opts.initiator
-      ? opts.channelName || randombytes(20).toString('hex')
+      ? opts.channelName || getRandomString()
       : null
 
     this.initiator = opts.initiator || false
